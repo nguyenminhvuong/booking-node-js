@@ -1,11 +1,12 @@
 const express = require('express');
 const controller = require('../controllers/hotel');
+const tokenHelper = require('../utils/tokenHelper');
 
 const router = express.Router();
 
-router.post('/', controller.createHotel);
-router.put('/:id', controller.updateHotel);
-router.delete('/:id', controller.deleteHotel);
+router.post('/', tokenHelper.verifyAdmin, controller.createHotel);
+router.put('/:id', tokenHelper.verifyAdmin, controller.updateHotel);
+router.delete('/:id', tokenHelper.verifyAdmin, controller.deleteHotel);
 router.get('/:id', controller.getHotel);
 router.get('/', controller.getAllHotels);
 

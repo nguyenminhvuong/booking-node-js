@@ -1,8 +1,8 @@
-const hotelModel = require('../models/Hotel');
+const Hotel = require('../models/Hotel');
 
 exports.createHotel = async function(req, res, next){
 
-    const newHotel = new hotelModel(req.body);
+    const newHotel = new Hotel(req.body);
 
     try {
         const savedHotel = await newHotel.save();
@@ -15,7 +15,7 @@ exports.createHotel = async function(req, res, next){
 exports.updateHotel = async function(req, res, next){
 
     try {
-        const updatedHotel = await hotelModel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new : true});
+        const updatedHotel = await Hotel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new : true});
         res.status(200).json(updatedHotel);
     } catch(err){
         next(err);
@@ -25,7 +25,7 @@ exports.updateHotel = async function(req, res, next){
 exports.deleteHotel = async function(req, res, next){
 
     try {
-        await hotelModel.findByIdAndDelete(req.params.id);
+        await Hotel.findByIdAndDelete(req.params.id);
         res.status(200).json("Hotel has ben deleted");
     } catch(err){
         next(err);
@@ -35,7 +35,7 @@ exports.deleteHotel = async function(req, res, next){
 exports.getHotel = async function(req, res, next){
 
     try {
-        const hotel = await hotelModel.findById(req.params.id);
+        const hotel = await Hotel.findById(req.params.id);
         res.status(200).json(hotel);
     } catch(err){
         next(err);
@@ -45,7 +45,7 @@ exports.getHotel = async function(req, res, next){
 exports.getAllHotels = async function(req, res, next){
 
     try {
-        const hotels = await hotelModel.find();
+        const hotels = await Hotel.find();
         res.status(200).json(hotels);
     } catch(err){
         next(err);

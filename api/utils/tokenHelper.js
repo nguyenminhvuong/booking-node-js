@@ -13,6 +13,27 @@ exports.verifyToken = function(req, res, next) {
             return next(errorHelper.createError(401, "Token is not valid!"));
 
         req.user = user;
+
         next();
     })
+}
+
+exports.verifyUser = function(req, res, next){
+    exports.verifyToken(req, res, () => {
+        if(req.user.id === req.params.id || req.user.isAdmin){
+            next();
+        } else{
+            return next(errorHelper.createError(403, "You are not authorized!"));
+        }
+    });
+}
+
+exports.verifyAdmin = function(req, res, next){
+    exports.verifyToken(req, res, () => {
+        if(req.user.isAdmin){
+            next();
+        } else{
+            return next(errorHelper.createError(403, "You are not authorized!"));
+        }
+    });
 }
