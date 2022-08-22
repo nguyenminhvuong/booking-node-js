@@ -1,11 +1,11 @@
 import Header from "../../components/header/Header";
-import NavBar from "../../components/navbar/NavBar";
+import Navbar from "../../components/navbar/Navbar";
 import "./home.css";
 
 export const Home = () => {
   return (
     <div>
-      <NavBar />
+      <Navbar />
       <Header />
     </div>
   );
