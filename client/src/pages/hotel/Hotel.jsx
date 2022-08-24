@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Footer } from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import { MailList } from "../../components/mailList/MailList";
@@ -14,15 +14,22 @@ import Navbar from "../../components/navbar/Navbar";
 import { SearchItem } from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
+import { AuthContext } from "../../context/AuthContext";
 import "./hotel.css";
+import { Reserve } from "../../components/reserve/Reserve";
 
 export default function Hotel() {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const { data, loading, error, reFetch } = useFetch(`/hotels/find/${id}`);
+
+  const { user } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const handleOpen = (index) => {
     setSlideNumber(index);
@@ -52,6 +59,14 @@ export default function Hotel() {
   }
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
+
+  const handleClick = () => {
+    if (user) {
+      setOpenModal(true);
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div>
@@ -129,7 +144,7 @@ export default function Hotel() {
                   <b>${days * data.cheapestPrice * options.room}</b> ({days}{" "}
                   nights)
                 </h2>
-                <button>Reserve or Book Now!</button>
+                <button onClick={handleClick}>Reserve or Book Now!</button>
               </div>
             </div>
           </div>
@@ -137,6 +152,7 @@ export default function Hotel() {
           <Footer />
         </div>
       )}
+      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
     </div>
   );
 }
