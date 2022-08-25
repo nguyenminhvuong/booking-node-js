@@ -11,5 +11,6 @@ router.get("/find/:id", controller.getHotel);
 router.get("/", controller.getAllHotels);
 router.get("/countByCity", controller.countByCity);
 router.get("/countByType", controller.countByType);
+router.get("/room/:id", controller.getHotelRooms);
 
 module.exports = router;
